@@ -9,6 +9,8 @@ var FileStore = require('session-file-store')(session);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+var dishesRouter = require('./routes/dishes');
 var promotionsRouter = require('./routes/promotions');
 var leadersRouter = require('./routes/leaders');
 
@@ -48,6 +50,7 @@ app.use('/users', usersRouter);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/dishes', dishesRouter);
 app.use('/promotions', promotionsRouter);
 app.use('/leaders', leadersRouter);
 

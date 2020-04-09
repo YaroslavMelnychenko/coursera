@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth</title>
+</head>
+<body>
+    <form action="/users/login" id="form" method="POST">
+        <input type="text" name="username" placeholder="username" />
+        <input type="password" name="password" placeholder="password" />
+        <button type="submit">Login</button>
+    </form>
+    <script>
+        document.getElementById('form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            
+            let formData = new FormData(event.target);
+
+            let obj = {};
+
+            formData.forEach((value, key) => obj[key] = value);
+
+            let request = new Request(event.target.action, {
+                method: event.target.method,
+                body: JSON.stringify(obj),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            fetch(request).then((response) => {
+                response.json().then(data => console.log(data));
+            });
+        });
+    </script>
+</body>
+</html>

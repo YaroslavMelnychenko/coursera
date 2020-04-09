@@ -9,11 +9,13 @@ var usersRouter = require('./routes/users');
 var dishesRouter = require('./routes/dishes');
 var promotionsRouter = require('./routes/promotions');
 var leadersRouter = require('./routes/leaders');
+var uploadRouter = require('./routes/upload');
 
 var passport = require('passport');
 var config = require('./config');
 
 const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
 
 const url = config.mongoUrl;
 const connect = mongoose.connect(url, { 
@@ -56,6 +58,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dishes', dishesRouter);
 app.use('/promotions', promotionsRouter);
 app.use('/leaders', leadersRouter);
+app.use('/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

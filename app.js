@@ -1,11 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-var session = require('express-session');
-var FileStore = require('session-file-store')(session);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -15,7 +11,6 @@ var promotionsRouter = require('./routes/promotions');
 var leadersRouter = require('./routes/leaders');
 
 var passport = require('passport');
-var authenticate = require('./authenticate');
 var config = require('./config');
 
 const mongoose = require('mongoose');
@@ -34,6 +29,15 @@ connect.then((db) => {
 
 var app = express();
 
+app.all('*', (req, res, next) => {
+  if(req.secure) {
+    return next();
+  } else {
+    console.log(app.get('secPort'));
+    res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
+  }
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -41,7 +45,6 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser('12345-56789-01234-56789'));
 
 app.use(passport.initialize());
 
